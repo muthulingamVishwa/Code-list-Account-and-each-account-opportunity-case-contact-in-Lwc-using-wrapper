@@ -1,1 +1,157 @@
+<template>
+    <lightning-card  title="Account" variant="narrow" icon-name="standard:account" >
+        <lightning-button-group slot="actions">
+            <lightning-button label="New Account" onclick={onHandler} ></lightning-button>
+            <lightning-button label="New Opportunity" onclick={onHandlerOPP}></lightning-button>
+            <lightning-button label="New Contact" onclick={onHandlerCon}></lightning-button>
+            <lightning-button label="New Case" onclick={onHandler2}></lightning-button> 
+        </lightning-button-group>
+        <div class="slds-border_bottom "></div>
+        <div class="slds-p-around_small">
+            <template if:false={viewall}>
+                <template if:true={Account}>
+                    <lightning-accordion class="example-accordion"
+                         onsectiontoggle={handleToggleSection}
+                         active-section-name={activeSection}>
+                            <template for:each={Account} for:item="accountWrapper">
+                                <lightning-accordion-section key={accountWrapper.account.Id} name={accountWrapper.account.Id} label={accountWrapper.account.Name}>
+                                    <div class="slds-box slds-box_x-small slds-m-around_small">
+                                        <p><b>Phone    :</b> {accountWrapper.account.Phone}</p>                                       
+                                        <p><b>Industry :</b> {accountWrapper.account.Industry}</p>     
+                                </div>
+                             <template if:true={accountWrapper.opportunities.length}>
+                                <div class="slds-box slds-m-around_small">
+                                    <lightning-card  variant="narrow" icon-name="standard:contact_list"> <h1 slot="title" class="no-wrap">opportunities({accountWrapper.opportunities.length})</h1>
+                                        <div class="slds-border_bottom "></div> 
+                                        <div class="slds-grid slds-wrap">
+                                        <template  for:each={accountWrapper.opportunities} for:item="opp">
+                                            <div key={opp.id} class='slds-p-around_small slds-col slds-size_2-of-1'>
+                                                <div class="demo-only" style="width:30rem">
+                                                    <article class="slds-tile slds-media">
+                                                      <div class="slds-media__figure">
+                                                        <span class="slds-icon_container" title="description of icon when needed">
+                                                          <svg class="slds-icon slds-icon-standard-groups" aria-hidden="true">
+                                                            <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#groups"></use>
+                                                          </svg>
+                                                        </span>
+                                                      </div>
+                                                      <div class="slds-media__body">
+                                                        <h3 class="slds-tile__title slds-border_bottom slds-truncate" title="Salesforce UX">
+                                                          <a href="#">{opp.Name}</a>
+                                                        </h3>
+                                                      
+                                                        <div class="slds-tile__detail">
+                                                          <dl class="slds-list_horizontal slds-wrap">
+                                                            <dt class="slds-item_label slds-text-color_weak slds-truncate" title="First Label">Amount :</dt>
+                                                            <dd class="slds-item_detail slds-truncate" title="Description for first label">{opp.Amount}</dd>
+                                                            <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Second Label">StageName:</dt>
+                                                            <dd class="slds-item_detail slds-truncate" title="Description for second label">{opp.StageName}</dd>
+                                                          </dl>
+                                                        </div>
+                                                      </div>
+                                                    </article>
+                                                  </div> 
+                                                
+                                            </div>  
+                                        </template> 
+                                    </div>
+                                    </lightning-card>
+                                </div>
+                            </template>
+                            <template if:true={accountWrapper.Contacts.length}>
+                                <div class='slds-box slds-m-around_small'>
+                                    <lightning-card  variant="narrow" icon-name="standard:swarm_request"><h1 slot="title" class="no-wrap">Contacts({accountWrapper.Contacts.length})</h1>
+                                        <div class="slds-border_bottom "></div> 
+                                        <div class="slds-grid slds-wrap">
+                                                  <template for:each={accountWrapper.Contacts} for:item="opp">
+                                                    <div key={opp.id} class='slds-m-around_small slds-col slds-size_1-of-3'>
+                                                        <lightning-card title={opp.Name} icon-name="standard:customer_360" >
+                                                             <div class="slds-border_bottom slds-m-around_x-small"></div> 
+                                                            <lightning-tile class="slds-box" type="media">
+                                                                <lightning-avatar slot="media" alternative-text="Diana Prince"></lightning-avatar>
+                                                                <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                                    <li class="slds-item">Email</li>
+                                                                    <li class="slds-item">{opp.Email}</li>
+                                                                </ul>
+                                                                <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                                    <li class="slds-item">Phone</li>
+                                                                    <li class="slds-item ">{opp.Phone}</li>
+                                                                </ul>
+                                                            </lightning-tile>
+                                                        </lightning-card>
+                                                    </div>
+                                                    
+                                                  </template>
+                                        </div>
+                                    </lightning-card>
+                                </div>
+                            </template>
+                            <template if:true={accountWrapper.cases.length}>
+                                <div class='slds-box slds-m-around_small'>
+                                    <lightning-card variant="narrow" icon-name="standard:case_change_status"><h1 slot="title" class="no-wrap">Cases({accountWrapper.cases.length})</h1>
+                                        <div class="slds-border_bottom slds-p-around_xx-small"></div>
+                                        <div class="slds-grid slds-wrap slds-card">
+                                        <template for:each={accountWrapper.cases} for:item="cases">
+                                        <div key={cases.id}  class='slds-m-around_small slds-col slds-size_2-of-1'>
+                                            <lightning-tile label={cases.Subject} href="/clark.html" type="media">
+                                                <lightning-avatar slot="media" src="https://icons8.com/icon/fewn3py0flks/case" fallback-icon-name="standard:person_account" alternative-text="Clark Kent"></lightning-avatar>
+                                                <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                    <li class="slds-item">Status</li>
+                                                    <li class="slds-item">{cases.Status}</li>
+                                                </ul>
+                                                <ul class="slds-list_horizontal slds-has-dividers_right">
+                                                    <li class="slds-item">Case Number</li>
+                                                    <li class="slds-item">{cases.CaseNumber}</li>
+                                                </ul>
+                                            </lightning-tile>
+                                                </div>
+                                            </template> 
+                                        </div> 
+                                    </lightning-card>
+                                </div>
+                            </template>
+                                </lightning-accordion-section>
+                            </template>
+                     </lightning-accordion>
+                </template>
+            </template>
+            <template if:true={viewall}>
+        <div class='slds-box '>
+            <lightning-card title="Contacts" variant="narrow" icon-name="standard:contact_list">
+                <div class="slds-border_bottom "></div> 
+            </lightning-card>
+        </div>
+    </template>
+    </div>
+        <p slot="footer">
+</p>
 
+    </lightning-card >
+<template if:true={Show}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+        <div class="slds-modal__header">
+        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create Account</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning-record-form
+                object-api-name={objectApiName}
+                fields={fields}
+                onsuccess={handleSuccess}
+                oncancel={cancelhandler}>
+            </lightning-record-form>
+        </div>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>
+<template if:true={showCase}>
+     <c-create-case onrefreshdata={handleRefreshData}></c-create-case> 
+</template>
+<template if:true={showOpp}>
+    <c-create-opp onrefreshdata={handleRefreshData}></c-create-opp>
+</template>
+<template if:true={ShowCon}>
+    <c-create-contact onrefreshdata={handleRefreshData}></c-create-contact>
+</template>
+</template>
