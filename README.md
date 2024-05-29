@@ -32,5 +32,6 @@ public with sharing class ListAccount {
         @AuraEnabled public List<Contact> Contacts;
      }
 }
+
 [https://github.com/muthulingamVishwa/Code-list-Account-and-each-account-opportunity-case-contact-in-Lwc-using-wrapper/assets/151023895/9e21d556-17ea-4acf-bf98-d3961fb24322](https://github.com/muthulingamVishwa/Code-list-Account-and-each-account-opportunity-case-contact-in-Lwc-using-wrapper/assets/151023895/69d20744-e593-4eb1-b2bf-3fe35e3c6f64)
 
